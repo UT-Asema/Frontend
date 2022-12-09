@@ -1,7 +1,7 @@
 import Homepage from "./Pages/Homepage/Homepage";
 import Login from "./Pages/Login/Login";
 import SignUp from "./Pages/SignUp/SignUp";
-import CreateRoadmap from "./Pages/CreateRoadmap/CreateRoadmap";
+import Roadmap from "./Pages/Roadmap/Roadmap";
 import Navbar from "./LargeComponents/Navbar/Navbar";
 import Explore from "./Pages/Explore/Explore";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
@@ -16,7 +16,7 @@ function App() {
           <Route path="/Explore" element={<Explore />} />
           <Route path="/SignUp" element={<SignUp />} />
           <Route path="/Login" element={<Login />} />
-          <Route path="/CreateRoadmap" element={<CreateRoadmap />} />
+          <Route path="/Roadmap" element={<Roadmap />} />
         </Routes>
       </div>
     </Router>
