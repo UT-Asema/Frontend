@@ -1,2 +1,1 @@
 # FrontEndVite
-Polihack frontend
