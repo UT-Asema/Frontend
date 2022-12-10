@@ -21,16 +21,17 @@ function Homepage () {
     const hiddenElenents = document.querySelectorAll('.hidel');
     hiddenElenents.forEach((el) => observer.observe(el));
   }, [])
+
   return (
-    <div className="overflow-auto grid items-center mb-12">
-      <div className="hideel grid items-center min-h-screen text-center text-2xl overflow-auto">
-        <section className="hidel m-0 bg-[#ba45b4]">
+    <div className="items-center justify-center">
+      <div className="hideel grid items-center text-center text-2xl">
+        <section className="hidel bg-gradient-to-b from-[#ba45b4] to-white">
           <Top />
         </section>
-        <section className="hidel m-0">
+        <section className="hidel mt-10">
           <Middle />
         </section>
-        <section className="hidel m-0 bg-[#ba45b4]">
+        <section className="hidel h-screen w-screen bg-gradient-to-b from-white to-[#ba45b4]">
           <Bottom />
         </section>
       </div>

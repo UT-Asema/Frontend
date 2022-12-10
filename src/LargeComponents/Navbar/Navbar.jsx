@@ -4,14 +4,16 @@ import NavbarButton from "./NavbarButton";
 
 const Navbar = () => {
   return (
-    <div className="flex justify-between">
+    <div className="flex justify-between text-[#E2E8F0] bg-[#1C142B]">
       <Leftpart />
-      <div className="flex">
+      <div className="flex items-center text-lg">
         <NavbarButton name={"Home"} pageLink={"Home"} />
-        <NavbarButton name={"explore"} pageLink={"explore"} />
-        <NavbarButton name={"login"} pageLink={"login"} />
-        <NavbarButton name={"Signup"} pageLink={"Signup"} />
+        <NavbarButton name={"Explore"} pageLink={"explore"} />
         <NavbarButton name={"CreateRoadmap"} pageLink={"CreateRoadmap"} />
+        <NavbarButton name={"Signup"} pageLink={"Signup"} />
+        <div className=" border-[#7F05B0] border-4 relative flex items-center h-1/2 justify-center mr-3">
+          <NavbarButton name={"Login"} pageLink={"login"} />
+        </div>
       </div>
     </div>
   );

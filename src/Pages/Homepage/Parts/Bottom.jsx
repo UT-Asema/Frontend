@@ -12,23 +12,23 @@ const Bottom = () => {
     );
   };
   return (
-    <div>
+    <div className="h-screen">
       <head>
         <title>Bottom Part of Homepage</title>
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css" integrity="sha512-MV7K8+y+gLIBoVD59lQIYicR65iaqukzvf/nwasF0nqhPay5w/9lJmVM2hMDcnK1OnMGCdVK+iQrJ7lzPJQd1w==" crossorigin="anonymous" referrerpolicy="no-referrer" />
       </head>
       <body>
         <div>
-          <div class=" m-3 p-6 shadow-lg rounded-md bg-white text-center object-contain h-56 w-1/2 fixed top-20 left-0 right-0">
+          <div class="p-6 m-6 mt-18 float-left shadow-xl rounded-xl bg-white text-center object-contain h-56 w-1/2 top-20 left-0 right-0">
             <h2 className="font-semibold">Never in the dark about bright ideas</h2>
             <p>
 
 This software builds up on our own experience as both educators and long-time learners.
 Using a flexible roadmap system, you can make your plans reality.
 Static systems are a thing of the past - so we bring on the <em className="font-semibold">future</em></p>
-            <img src="src/Pages/Login/login_image.png" alt="login_image"/>
+            <img className="bottom-1/2 relative" src="src/Pages/Homepage/Parts/Assets/Pngtreegray_tailed_paper_airplane_7690097.png" alt="plane"/>
           </div>
-          <div class="w-fit h-fit fixed ml-12 p-6 shadow-lg rounded-md bg-white text-center">
+          <div class="mt-24 object-contain relative float-right m-6 p-6 shadow-xl rounded-xl bg-white text-center w-2/5">
             <div><p>Finding the best learning path is hard,</p><p className="italic font-semibold"> that's why we do it for you;)</p></div>
             <hr className="p-6 opacity-0"></hr>
             <p>Here you can find the best knowledge roadmap,</p><p className="italic font-semibold relative"> with help from everyone else</p>

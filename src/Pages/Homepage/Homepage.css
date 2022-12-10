@@ -13,8 +13,6 @@
   
   section {
     display: grid;
-    grid-template-rows: 25% 25% 25%;
-    row-gap: 0;
     place-items: center;
     align-content: center;
   }
