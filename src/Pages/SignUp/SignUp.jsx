@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import $ from 'jquery';
-import { register } from '../../api/requests.js'
+import { register, login } from '../../api/requests.js'
 
 function SignUp() {
   const [user, setUser] = useState('')
@@ -16,14 +16,14 @@ function SignUp() {
     // post request to backend
     // if success, login and redirect to homepage
     // if fail, display error message
-    register(user, pass, email).then((res) => {
-      console.log(res);
-      if (res.status === 200) {
-        console.log("registered");
-      } else {
-        console.log("not registered");
-      }
-    });
+    if (register(user, pass, email)) {
+      console.log("registered");
+      // redirect to homepage
+      login(user, pass);
+      window.location.href = "/";
+    } else {
+      console.log("not registered");
+    }
   }
 
   return (

@@ -21,14 +21,13 @@ function Login() {
     // if success, redirect to homepage
     // if fail, display error message
 
-    login(user, pas).then((res) => {
-      console.log("status", res.status);
-      if (res.status === 200) {
-        console.log("logged in");
-      } else {
-        console.log("not logged in ");
-      }
-    });
+    if (login(user,pas)) {
+      console.log("logged in");
+      // redirect to homepage
+      window.location.href = "/";
+    } else {
+      console.log("not logged in");
+    }
   };
 
   return (
