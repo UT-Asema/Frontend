@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import $ from "jquery";
 
-import { login, login2 } from "../../api/requests";
+import { login } from "../../api/requests";
 $.ajaxSetup({
   crossDomain: true,
   xhrFields: {

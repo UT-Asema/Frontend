@@ -40,3 +40,48 @@ export const register = async (username, password, email) => {
   console.log("respone", response);
   return response;
 }
+
+export const logout = async () => {
+  let response = $.ajax({
+    url: BASEURL + "/auth/logout",
+    type: "POST",
+    async: false,
+    xhrFields: {
+      withCredentials: true,
+    },
+    withCredentials: true,
+    crossDomain: true,
+  });
+  console.log("respone", response);
+  return response;
+}
+
+export const check = async () => {
+  let response = $.ajax({
+    url: BASEURL + "/auth/check",
+    type: "GET",
+    async: false,
+    xhrFields: {
+      withCredentials: true,
+    },
+    withCredentials: true,
+    crossDomain: true,
+  });
+  console.log("respone", response);
+  return response;
+}
+
+export const getPost = async (id) => {
+  let response = $.ajax({
+    url: BASEURL + "/posts/get/" + id,
+    type: "GET",
+    async: false,
+    xhrFields: {
+      withCredentials: true,
+    },
+    withCredentials: true,
+    crossDomain: true,
+  });
+  console.log("respone", response);
+  return response;
+}
