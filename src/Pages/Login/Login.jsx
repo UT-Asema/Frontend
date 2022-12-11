@@ -1,4 +1,5 @@
 import React , { useState } from "react";
+import $ from 'jquery'
 
 function Login() {
   const [user, setUser] = useState('');
@@ -7,7 +8,34 @@ function Login() {
   const handleSubmit = (e) => {
     e.preventDefault();
     console.log(user);
-    console.log(pas); 
+    console.log(pas);
+
+    // post request to backend
+    // if success, redirect to homepage
+    // if fail, display error message
+    $.ajax({
+      url: 'http://localhost:3000/auth/password',
+      type: 'POST',
+      data: {
+        username: user,
+        password: pas
+      },
+      success: function(data) {
+        console.log(data);
+        if (data.success) {
+          window.location.href = '/Home';
+        } else {
+          alert(data.message);
+        }
+      },
+      error: function(err) {
+        console.log(err);
+
+        alert("Username or password is incorrect");
+      }
+    })
+
+
   }
 
   return (
