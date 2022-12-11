@@ -9,7 +9,7 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 function App() {
   return (
     <Router>
-      <div className="w-screen h-screen overflow-auto">
+      <div className="w-screen h-screen overflow-hidden">
         <Navbar />
         <Routes>
           <Route path="/Home" element={<Homepage />} />
