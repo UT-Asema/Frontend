@@ -20,26 +20,23 @@ export const login = async (username, password) => {
   console.log("respone", response);
   return response;
 };
-export const login2 = async (username, password) => {
-  console.log("try");
 
-  const update = {
-    title: "A blog post by Kingsley",
-    body: "Brilliant post on fetch API",
-    userId: 1,
-  };
-
-  const options = {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
+export const register = async (username, password, email) => {
+  let response = $.ajax({
+    url: BASEURL + "/auth/register",
+    type: "POST",
+    async: false,
     data: {
       username,
       password,
+      email,
     },
-    // body: JSON.stringify(update),
-  };
-  let response = await fetch(BASEURL + "/auth/password", options);
+    xhrFields: {
+      withCredentials: true,
+    },
+    withCredentials: true,
+    crossDomain: true,
+  });
+  console.log("respone", response);
   return response;
-};
+}

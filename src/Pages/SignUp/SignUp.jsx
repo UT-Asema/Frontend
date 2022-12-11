@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import $ from 'jquery';
+import { register } from '../../api/requests.js'
 
 function SignUp() {
   const [user, setUser] = useState('')
@@ -15,27 +16,14 @@ function SignUp() {
     // post request to backend
     // if success, login and redirect to homepage
     // if fail, display error message
-    $.ajax({
-      url: 'http://localhost:3000/auth/register',
-      type: 'POST',
-      data: {
-        username: user,
-        email: email,
-        password: pass
-      },
-      success: function(data) {
-        console.log(data);
-        if (data.success) {
-          window.location.href = '/login';
-        } else {
-          alert(data.message);
-        }
-      },
-      error: function(err) {
-        console.log(err);
-        alert('Username is already taken');
+    register(user, email, pass).then((res) => {
+      console.log(res);
+      if (res.status === 200) {
+        console.log("registered");
+      } else {
+        console.log("not registered");
       }
-    })
+    });
   }
 
   return (
