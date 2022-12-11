@@ -26,10 +26,10 @@ const ShowRoadmap = () => {
 
   const id = useParams().id;
   if (id == 0) {
-    // create new post
-    createPost("yes","yes","{}").then(r => {
-      window.location.href = "/Roadmap/" + r.id;
-    });
+    // // create new post
+    // createPost("yes","yes","{}").then(r => {
+    //   window.location.href = "/Roadmap/" + r.id;
+    // });
   } else {
     // load post
     let postData = getPost(id);

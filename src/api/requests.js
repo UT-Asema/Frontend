@@ -51,7 +51,7 @@ export const logout = () => {
 export const getPost = (id) => {
   let filter = DATA.posts.filter((post) => post.id === id);
   if (filter !== undefined) {
-    return filter;
+    return filter[0];
   } else return false;
 }
 
@@ -89,7 +89,7 @@ export const createPost = async (title, description, content) => {
   if (!DATA.loggedIn) return false;
 
   let data = DATA;
-  data.posts.push({ title, description, content, date: Date.now(), date_edited: Date.now(), likes: [] });
+  data.posts.push({ id: data.posts.length, title, description, content, date: Date.now(), date_edited: Date.now(), likes: [] });
   updateData(data);
   return true;
 }
