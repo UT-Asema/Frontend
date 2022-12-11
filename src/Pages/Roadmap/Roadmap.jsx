@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useLayoutEffect } from 'react'
 import { useEffect, useState } from "react";
 import * as d3 from "d3";
 import Generator from "./Generator";
@@ -10,12 +10,35 @@ import { useSelector } from "react-redux";
 import { updateNodeData } from "../../store/roadmapNew";
 import { useParams } from "react-router";
 
-import { createPost } from "../../api/requests";
+import { createPost, getPost } from '../../api/requests'
 
 const ShowRoadmap = () => {
-  const id = useParams().id;
   const dispatch = useDispatch();
   const { roadmapNew } = useSelector((state) => state);
+
+  useLayoutEffect(() => {
+    let data = window.data;
+
+    if (!data?.loggedIn) {
+      window.location.href = "/Signup";
+    }
+  })
+
+  const id = useParams().id;
+  if (id == 0) {
+    // create new post
+    createPost("yes","yes","{}").then(r => {
+      window.location.href = "/Roadmap/" + r.id;
+    });
+  } else {
+    // load post
+    let postData = getPost(id);
+
+    if (postData) {
+      // let data = window.data;
+      // TODO
+    }
+  }
 
   const [showDetails, setshowDetails] = useState(roadmapNew.showDetails);
   const [DetailsID, setDetailsID] = useState(roadmapNew.selectedNode);
@@ -98,7 +121,7 @@ const ShowRoadmap = () => {
                   let data = roadmapNew;
                   console.log(data);
                   data = JSON.stringify(data);
-                  createPost("loremipsum", "desc", data);
+                  editPost(id, "loremipsum", "desc", data);
                 }}
                 className="m-10 mt-20 relative  font-sans bg-gray-50 inline-block text-center justify-center font-bold text-xl rounded-xl p-3"
               >

@@ -10,7 +10,7 @@ function App() {
   return (
     <Router>
       <div className="w-screen h-screen overflow-auto">
-        <Navbar />
+        <Navbar/>
         <Routes>
           <Route path="/" element={<Homepage />} />
           <Route path="/Home" element={<Homepage />} />

@@ -1,42 +1,41 @@
-import axios from "axios";
-let BASEURL = "http://mc.sopy.one:3000";
-import $ from "jquery";
-
 // data json
-let DATA
-window.data = DATA
+let DATA = {loggedIn: false, users:[], posts:[],likes:[]};
 try {
   DATA = JSON.parse(localStorage.getItem("data"));
+  if (!DATA) {
+    DATA = {loggedIn: false, users:[], posts:[],likes:[]};
+  }
 } catch (e) {
-  DATA = {loggedin: false, users:[], posts:[],likes:[]}
+  DATA = {loggedIn: false, users:[], posts:[],likes:[]}
   console.log("error parsing stored data")
 }
 
+window.data = DATA
+
 let updateData = (data) => {
-  localStorage.setItem("data", JSON.stringify(data));
   DATA = data
+  localStorage.setItem("data", JSON.stringify(data));
 }
 
-export const login = async (username, password) => {
-  let filter = DATA.find((user) => user.username === username && user.password === password);
+export const login = (username, password) => {
+  let filter = DATA?.users?.filter((user) => user.username === username && user.password === password);
 
   if (filter?.[0] !== undefined) {
-    DATA.loggedin = true;
+    DATA.loggedIn = true;
     updateData(DATA);
     return filter[0];
   } else return false;
 };
 
 export const register = (username, password, email) => {
-  let filter = DATA.find((user) => user.username === username);
+  console.log(DATA)
+  let filter = DATA?.users.filter((user) => user.username === username);
 
-  if (filter?.[0] === undefined) {
+  if (filter?.[0] !== undefined) {
     return false;
   } else {
     let data = DATA;
     data.users.push({ username, password, email });
-    // logged in
-    data.loggedin = true;
 
     updateData(data);
     return true;
@@ -44,40 +43,40 @@ export const register = (username, password, email) => {
 }
 
 export const logout = () => {
-  DATA.loggedin = false;
+  DATA.loggedIn = false;
   updateData(DATA);
   return true;
 }
 
-export const getPost = async (id) => {
-  let filter = DATA.posts.find((post) => post.id === id);
+export const getPost = (id) => {
+  let filter = DATA.posts.filter((post) => post.id === id);
   if (filter !== undefined) {
     return filter;
   } else return false;
 }
 
-export const searchPosts = async (term) => {
+export const searchPosts = (term) => {
   let filter = DATA.posts.filter((post) => post.title.includes(term));
   if (filter?.length > 0) {
     return filter;
   } else return false;
 }
 
-export const getTopPosts = async () => {
+export const getTopPosts = () => {
   let filter = DATA.posts.sort((a, b) => b.likes - a.likes);
   if (filter?.length > 0) {
     return filter;
   } else return false;
 }
 
-export const getNewPosts = async () => {
+export const getNewPosts = () => {
   let filter = DATA.posts.sort((a, b) => b.date - a.date);
   if (filter?.length > 0) {
     return filter;
   } else return false;
 }
 
-export const getTrendingPosts = async () => {
+export const getTrendingPosts = () => {
   // trending posts are posts with the most likes in the last 7 days
   let filter = DATA.posts.sort((a, b) => b.likes.filter((like) => like.date > Date.now() - 604800000).length - a.likes.filter((like) => like.date > Date.now() - 604800000).length);
   if (filter?.length > 0) {
@@ -87,7 +86,7 @@ export const getTrendingPosts = async () => {
 
 export const createPost = async (title, description, content) => {
   // check if user is logged in
-  if (!DATA.loggedin) return false;
+  if (!DATA.loggedIn) return false;
 
   let data = DATA;
   data.posts.push({ title, description, content, date: Date.now(), date_edited: Date.now(), likes: [] });
@@ -97,10 +96,10 @@ export const createPost = async (title, description, content) => {
 
 export const editPost = async (id, title, description, content) => {
   // check if user is logged in
-  if (!DATA.loggedin) return false;
+  if (!DATA.loggedIn) return false;
 
   let data = DATA;
-  let filter = data.posts.find((post) => post.id === id);
+  let filter = data.posts.filter((post) => post.id === id);
   if (filter !== undefined) {
     filter.title = title;
     filter.description = description;
@@ -113,10 +112,10 @@ export const editPost = async (id, title, description, content) => {
 
 export const deletePost = async (id) => {
   // check if user is logged in
-  if (!DATA.loggedin) return false;
+  if (!DATA.loggedIn) return false;
 
   let data = DATA;
-  let filter = data.posts.find((post) => post.id === id);
+  let filter = data.posts.filter((post) => post.id === id);
   if (filter !== undefined) {
     data.posts.splice(data.posts.indexOf(filter), 1);
     updateData(data);
@@ -126,18 +125,18 @@ export const deletePost = async (id) => {
 
 export const likePost = async (id) => {
   // check if user is logged in
-  if (!DATA.loggedin) return false;
+  if (!DATA.loggedIn) return false;
 
   // check if user has already liked post
-  let filter = DATA.posts.find((post) => post.id === id);
-  if (filter.likes.find((like) => like.user === DATA.loggedin) !== undefined) {
+  let filter = DATA.posts.filter((post) => post.id === id);
+  if (filter.likes.filter((like) => like.user === DATA.loggedIn) !== undefined) {
     // unlike post
-    filter.likes.splice(filter.likes.indexOf(filter.likes.find((like) => like.user === DATA.loggedin)), 1);
+    filter.likes.splice(filter.likes.indexOf(filter.likes.filter((like) => like.user === DATA.loggedIn)), 1);
     updateData(DATA);
     return true;
   } else {
     // like post
-    filter.likes.push({ user: DATA.loggedin, date: Date.now() });
+    filter.likes.push({ user: DATA.loggedIn, date: Date.now() });
     updateData(DATA);
     return true;
   }

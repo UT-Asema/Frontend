@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import $ from 'jquery';
-import { register } from '../../api/requests.js'
+import { register, login } from '../../api/requests.js'
 
 function SignUp() {
   const [user, setUser] = useState('')
@@ -19,6 +19,7 @@ function SignUp() {
     if (register(user, pass, email)) {
       console.log("registered");
       // redirect to homepage
+      login(user, pass);
       window.location.href = "/";
     } else {
       console.log("not registered");
