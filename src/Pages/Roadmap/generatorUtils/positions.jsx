@@ -7,7 +7,7 @@ export const calculateDirVector = (pos1, pos2) => {
   let dx = pos2.x - pos1.x;
   let dy = pos2.y - pos1.y;
   let distance = Math.sqrt(dx * dx + dy * dy);
-  let lng = 125;
+  let lng = 300;
   let force = 40;
   force = Math.min(force, 10000);
   let x = 0;

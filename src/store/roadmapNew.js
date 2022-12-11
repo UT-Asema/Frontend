@@ -56,7 +56,7 @@ let initState = () => {
   let height = 100;
   let initialState = {
     nodeID: 1,
-    lng: 500,
+    lng: 1000,
     lineID: 0,
     padding: 0,
     width: width,
