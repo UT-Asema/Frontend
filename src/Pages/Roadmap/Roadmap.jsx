@@ -63,9 +63,9 @@ const ShowRoadmap = () => {
   };
 
   return (
-    <div className="border-2 h-full w-full flex">
-      <div className="w-72 h-full border-2 ">
-        <div>menu var</div>
+    <div className="border-2 h-full w-full flex bg-[#f6d9f3]">
+      <div className="w-72 h-full border-2 bg-[#1D142C]">
+        <div className="relative left-6 top-12 font-sans bg-gray-50 inline-block text-center justify-center font-bold text-xl rounded-xl p-3">Create Your Own!</div>
       </div>
       <div className="w-full h-full">
         <svg
@@ -82,28 +82,9 @@ const ShowRoadmap = () => {
       {showDetails && (
         <div
           id="data-div"
-          className=" border-2 border-black bg-green-600 absolute right-0 w-60 h-full"
+          className=" border-2 border-black bg-white shadow-xl absolute text-center right-0 w-fit h-full"
         >
-          {!editing && CanEdit && (
-            <button
-              onClick={() => {
-                toggleEdit();
-              }}
-            >
-              Edit data
-            </button>
-          )}
-          {editing && (
-            <button
-              onClick={() => {
-                toggleEdit();
-              }}
-            >
-              Save changes
-            </button>
-          )}
-
-          {DetailsID}
+          {/* {DetailsID} */}
           {!editing && (
             <>
               <div className="title">--{node.resources.title}</div>
@@ -122,6 +103,7 @@ const ShowRoadmap = () => {
                     changeTitle(e.target.value);
                   }}
                   className="title"
+                  class="border-2 border-rose-500"
                 />
               </div>
               <div className=" m-10">
@@ -134,6 +116,7 @@ const ShowRoadmap = () => {
                     changeParagraph(e.target.value);
                   }}
                   className="paragraph"
+                  class="border-2 border-rose-500"
                 />
               </div>
               <div className=" m-10">
@@ -145,9 +128,30 @@ const ShowRoadmap = () => {
                     changeLink(e.target.value);
                   }}
                   className="Links"
+                  class="border-2 border-rose-500"
                 />
               </div>
             </>
+          )}
+          {editing && (
+            <button
+              onClick={() => {
+                toggleEdit();
+              }}
+              class="borde-2 py-1 w-36 justify-center hover:scale-110 duration-300 rounded-md hover:text-white border-[#ba45b4] bg-[#ba45b4] font-semibold"
+            >
+              Save changes
+            </button>
+          )}
+          {!editing && CanEdit && (
+            <button
+              onClick={() => {
+                toggleEdit();
+              }}
+              class="borde-2 m-14 w-36 py-1 hover:scale-110 duration-300 justify-center rounded-md hover:text-white border-[#ba45b4] bg-[#ba45b4] font-semibold"
+            >
+              Edit data
+            </button>
           )}
         </div>
       )}
