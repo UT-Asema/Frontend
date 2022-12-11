@@ -1,11 +1,11 @@
 import { configureStore } from "@reduxjs/toolkit";
-import roadmapReducer from "./roadmap";
 import userReducer from "./user";
 import exploreRoadmapsReducer from "./exploreRoadmaps";
+import newRoadmapReducer from "./roadmapNew";
 
 export const store = configureStore({
   reducer: {
-    roadmap: roadmapReducer,
+    roadmapNew: newRoadmapReducer,
     user: userReducer,
     exploreRoadmaps: exploreRoadmapsReducer,
   },

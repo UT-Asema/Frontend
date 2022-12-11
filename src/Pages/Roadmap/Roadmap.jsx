@@ -4,14 +4,18 @@ import * as d3 from "d3";
 import Generator from "./Generator";
 import { store } from "../../store/store";
 import { useDispatch } from "react-redux";
-
-import { modifySubnode } from "../../store/roadmap";
+import { findNode } from "./generatorUtils/utils";
+import { addNode } from "../../store/roadmapNew";
+import { useSelector } from "react-redux";
 
 const ShowRoadmap = () => {
   const dispatch = useDispatch();
+  const { roadmapNew } = useSelector((state) => state);
 
-  const [showDetails, setshowDetails] = useState(false);
-  const [DetailsID, setDetailsID] = useState(0);
+  const [showDetails, setshowDetails] = useState(roadmapNew.showDetails);
+  const [DetailsID, setDetailsID] = useState(roadmapNew.selectedNode);
+  const [node, setNode] = useState("");
+  const [editing, setEditing] = useState(false);
 
   useEffect(() => {
     d3.select("body").attr("class", "overflow-hidden");
@@ -20,21 +24,30 @@ const ShowRoadmap = () => {
     };
   }, []);
 
+  useEffect(() => {
+    setshowDetails(roadmapNew.showDetails);
+  }, [roadmapNew.showDetails]);
+
+  useEffect(() => {
+    setDetailsID(roadmapNew.selectedNode);
+    setNode(findNode(roadmapNew.selectedNode));
+  }, [roadmapNew.selectedNode]);
+  console.log(node);
   let testReducer = () => {
-    dispatch(
-      modifySubnode({
-        sizeX: 1050,
-        sizeY: 1005,
-        id: 4,
-      })
-    );
+    dispatch(addNode());
+  };
+
+  let toggleEdit = () => {
+    setEditing(true);
   };
 
   return (
     <div className="border-2 h-full w-full flex">
-      <div className="w-64 h-full border-2">
+      <div className="w-64 h-full border-2 ">
         <div>menu var</div>
-        <button onClick={testReducer}>testReducer</button>
+        {!editing && <button onClick={toggleEdit}>edit nodes</button>}
+        {editing && <button onClick={toggleEdit}>save edits</button>}
+        {editing && <button onClick={toggleEdit}>cancel edits</button>}
       </div>
       <div className="w-full h-full">
         <svg
@@ -48,9 +61,17 @@ const ShowRoadmap = () => {
           </g>
         </svg>
       </div>
-      <div className=" hidden border-2 border-black bg-green-600 absolute right-0 w-60 h-full">
-        Here goes additional detail
-      </div>
+      {showDetails && (
+        <div
+          id="data-div"
+          className=" border-2 border-black bg-green-600 absolute right-0 w-60 h-full"
+        >
+          {DetailsID}
+          <div className="title">--{node.resources.title}</div>
+          <div className="body">--{node.resources.paragraph}</div>
+          <div className="Resources">--{node.resources.links}</div>
+        </div>
+      )}
     </div>
   );
 };
