@@ -3,7 +3,13 @@ let BASEURL = "http://mc.sopy.one:3000";
 import $ from "jquery";
 
 // data json
-let DATA = JSON.parse(localStorage.getItem("data")||"{loggedin: false, users:[], posts:[],likes:[]}");
+let DATA
+try {
+  DATA = JSON.parse(localStorage.getItem("data"));
+} catch (e) {
+  DATA = {loggedin: false, users:[], posts:[],likes:[]}
+  console.log("error parsing stored data")
+}
 
 let updateData = (data) => {
   localStorage.setItem("data", JSON.stringify(data));
