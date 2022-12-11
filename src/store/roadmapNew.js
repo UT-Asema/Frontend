@@ -53,6 +53,7 @@ let initState = () => {
     padding: 0,
     width: 100,
     height: 50,
+    user: "",
 
     showDetails: false,
     selectedNode: 0,
@@ -115,6 +116,28 @@ export const roadmapNewSlice = createSlice({
       // console.log(action.payload);
       state.nodes = action.payload.nodes;
     },
+    updateRoadmap: (state, action) => {
+      let newRoadmap = action.payload;
+      for (let prop in newRoadmap) {
+        state[prop] = newRoadmap[prop];
+      }
+    },
+    updateNodeData: (state, action) => {
+      const { resources, id } = action.payload;
+      let nodes = state.nodes;
+      let newNodes = [];
+      for (let node of nodes) {
+        if (node.id === id) {
+          newNodes.push({
+            ...node,
+            resources: resources,
+          });
+        } else {
+          newNodes.push(node);
+        }
+      }
+      state.nodes = newNodes;
+    },
     removeNode: (state, action) => {
       // removing subnode
     },
@@ -123,6 +146,12 @@ export const roadmapNewSlice = createSlice({
   },
 });
 
-export const { addNode, modifySubnode, setNode, updateNodes, flipDetails } =
-  roadmapNewSlice.actions;
+export const {
+  addNode,
+  modifySubnode,
+  setNode,
+  updateNodeData,
+  updateNodes,
+  flipDetails,
+} = roadmapNewSlice.actions;
 export default roadmapNewSlice.reducer;
