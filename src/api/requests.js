@@ -2,219 +2,133 @@ import axios from "axios";
 let BASEURL = "http://mc.sopy.one:3000";
 import $ from "jquery";
 
+// data json
+let DATA = JSON.parse(localStorage.getItem("data")||"{loggedin: false, users:[], posts:[],likes:[]}");
+
+let updateData = (data) => {
+  localStorage.setItem("data", JSON.stringify(data));
+  DATA = data
+}
+
 export const login = async (username, password) => {
-  let response = $.ajax({
-    url: BASEURL + "/auth/password",
-    type: "POST",
-    async: false,
-    data: {
-      username,
-      password,
-    },
-    xhrFields: {
-      withCredentials: true,
-    },
-    withCredentials: true,
-    crossDomain: true,
-  });
-  console.log("respone", response);
-  return response;
+  let filter = DATA.find((user) => user.username === username && user.password === password);
+
+  if (filter?.[0] !== undefined) {
+    DATA.loggedin = true;
+    updateData(DATA);
+    return filter[0];
+  } else return false;
 };
 
-export const register = async (username, password, email) => {
-  let response = $.ajax({
-    url: BASEURL + "/auth/register",
-    type: "POST",
-    async: false,
-    data: {
-      username,
-      password,
-      email,
-    },
-    xhrFields: {
-      withCredentials: true,
-    },
-    withCredentials: true,
-    crossDomain: true,
-  });
-  console.log("respone", response);
-  return response;
-};
+export const register = (username, password, email) => {
+  let filter = DATA.find((user) => user.username === username);
 
-export const logout = async () => {
-  let response = $.ajax({
-    url: BASEURL + "/auth/logout",
-    type: "POST",
-    async: false,
-    xhrFields: {
-      withCredentials: true,
-    },
-    withCredentials: true,
-    crossDomain: true,
-  });
-  console.log("respone", response);
-  return response;
-};
+  if (filter?.[0] === undefined) {
+    return false;
+  } else {
+    let data = DATA;
+    data.users.push({ username, password, email });
+    updateData(data);
+    return true;
+  }
+}
 
-export const check = async () => {
-  let response = $.ajax({
-    url: BASEURL + "/auth/check",
-    type: "GET",
-    async: false,
-    xhrFields: {
-      withCredentials: true,
-    },
-    withCredentials: true,
-    crossDomain: true,
-  });
-  console.log("respone", response);
-  return response;
-};
+export const logout = () => {
+  DATA.loggedin = false;
+  updateData(DATA);
+  return true;
+}
 
 export const getPost = async (id) => {
-  let response = $.ajax({
-    url: BASEURL + "/posts/get/" + id,
-    type: "GET",
-    async: false,
-    xhrFields: {
-      withCredentials: true,
-    },
-    withCredentials: true,
-    crossDomain: true,
-  });
-  console.log("respone", response);
-  return response;
-};
+  let filter = DATA.posts.find((post) => post.id === id);
+  if (filter !== undefined) {
+    return filter;
+  } else return false;
+}
 
 export const searchPosts = async (term) => {
-  let response = $.ajax({
-    url: BASEURL + "/posts/search/" + term,
-    type: "GET",
-    async: false,
-    xhrFields: {
-      withCredentials: true,
-    },
-    withCredentials: true,
-    crossDomain: true,
-  });
-  console.log("respone", response);
-  return response;
-};
+  let filter = DATA.posts.filter((post) => post.title.includes(term));
+  if (filter?.length > 0) {
+    return filter;
+  } else return false;
+}
 
 export const getTopPosts = async () => {
-  let response = $.ajax({
-    url: BASEURL + "/posts/getTop",
-    type: "GET",
-    async: false,
-    xhrFields: {
-      withCredentials: true,
-    },
-    withCredentials: true,
-    crossDomain: true,
-  });
-  console.log("respone", response);
-  return response;
-};
+  let filter = DATA.posts.sort((a, b) => b.likes - a.likes);
+  if (filter?.length > 0) {
+    return filter;
+  } else return false;
+}
 
 export const getNewPosts = async () => {
-  let response = $.ajax({
-    url: BASEURL + "/posts/getNew",
-    type: "GET",
-    async: false,
-    xhrFields: {
-      withCredentials: true,
-    },
-    withCredentials: true,
-    crossDomain: true,
-  });
-  console.log("respone", response);
-  return response;
-};
+  let filter = DATA.posts.sort((a, b) => b.date - a.date);
+  if (filter?.length > 0) {
+    return filter;
+  } else return false;
+}
 
 export const getTrendingPosts = async () => {
-  let response = $.ajax({
-    url: BASEURL + "/posts/getTrending",
-    type: "GET",
-    async: false,
-    xhrFields: {
-      withCredentials: true,
-    },
-    withCredentials: true,
-    crossDomain: true,
-  });
-  console.log("respone", response);
-  return response;
-};
+  // trending posts are posts with the most likes in the last 7 days
+  let filter = DATA.posts.sort((a, b) => b.likes.filter((like) => like.date > Date.now() - 604800000).length - a.likes.filter((like) => like.date > Date.now() - 604800000).length);
+  if (filter?.length > 0) {
+    return filter;
+  } else return false;
+}
 
 export const createPost = async (title, description, content) => {
-  let response = $.ajax({
-    url: BASEURL + "/posts/create",
-    type: "POST",
-    async: false,
-    data: {
-      title,
-      description,
-      content,
-    },
-    xhrFields: {
-      withCredentials: true,
-    },
-    withCredentials: true,
-    crossDomain: true,
-  });
-  console.log("respone", response);
-  return response;
-};
+  // check if user is logged in
+  if (!DATA.loggedin) return false;
+
+  let data = DATA;
+  data.posts.push({ title, description, content, date: Date.now(), date_edited: Date.now(), likes: [] });
+  updateData(data);
+  return true;
+}
 
 export const editPost = async (id, title, description, content) => {
-  let response = $.ajax({
-    url: BASEURL + "/posts/edit/" + id,
-    type: "POST",
-    async: false,
-    data: {
-      title,
-      description,
-      content,
-    },
-    xhrFields: {
-      withCredentials: true,
-    },
-    withCredentials: true,
-    crossDomain: true,
-  });
-  console.log("respone", response);
-  return response;
-};
+  // check if user is logged in
+  if (!DATA.loggedin) return false;
+
+  let data = DATA;
+  let filter = data.posts.find((post) => post.id === id);
+  if (filter !== undefined) {
+    filter.title = title;
+    filter.description = description;
+    filter.content = content;
+    filter.date_edited = Date.now();
+    updateData(data);
+    return true;
+  } else return false;
+}
 
 export const deletePost = async (id) => {
-  let response = $.ajax({
-    url: BASEURL + "/posts/delete/" + id,
-    type: "POST",
-    async: false,
-    xhrFields: {
-      withCredentials: true,
-    },
-    withCredentials: true,
-    crossDomain: true,
-  });
-  console.log("respone", response);
-  return response;
-};
+  // check if user is logged in
+  if (!DATA.loggedin) return false;
 
-export const ratePost = async (id, rating) => {
-  let response = $.ajax({
-    url: BASEURL + "/posts/rate/" + id,
-    type: "POST",
-    async: false,
-    data: {
-      rating,
-    },
-    xhrFields: {
-      withCredentials: true,
-    },
-    withCredentials: true,
-    crossDomain: true,
-  });
-  console.log("respone", response);
-  return response;
-};
+  let data = DATA;
+  let filter = data.posts.find((post) => post.id === id);
+  if (filter !== undefined) {
+    data.posts.splice(data.posts.indexOf(filter), 1);
+    updateData(data);
+    return true;
+  } else return false;
+}
+
+export const likePost = async (id) => {
+  // check if user is logged in
+  if (!DATA.loggedin) return false;
+
+  // check if user has already liked post
+  let filter = DATA.posts.find((post) => post.id === id);
+  if (filter.likes.find((like) => like.user === DATA.loggedin) !== undefined) {
+    // unlike post
+    filter.likes.splice(filter.likes.indexOf(filter.likes.find((like) => like.user === DATA.loggedin)), 1);
+    updateData(DATA);
+    return true;
+  } else {
+    // like post
+    filter.likes.push({ user: DATA.loggedin, date: Date.now() });
+    updateData(DATA);
+    return true;
+  }
+}

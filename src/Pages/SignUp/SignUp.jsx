@@ -16,14 +16,11 @@ function SignUp() {
     // post request to backend
     // if success, login and redirect to homepage
     // if fail, display error message
-    register(user, pass, email).then((res) => {
-      console.log(res);
-      if (res.status === 200) {
-        console.log("registered");
-      } else {
-        console.log("not registered");
-      }
-    });
+    if (register(user, email, pass)) {
+      console.log("registered");
+    } else {
+      console.log("not registered");
+    }
   }
 
   return (
