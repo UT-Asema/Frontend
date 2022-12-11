@@ -4,7 +4,7 @@ import $ from "jquery";
 
 export const login = async (username, password) => {
   let response = $.ajax({
-    url: BASEURL + "/auth/login",
+    url: BASEURL + "/auth/password",
     type: "POST",
     async: false,
     data: {
