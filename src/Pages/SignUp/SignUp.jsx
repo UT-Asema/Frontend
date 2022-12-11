@@ -16,7 +16,7 @@ function SignUp() {
     // post request to backend
     // if success, login and redirect to homepage
     // if fail, display error message
-    register(user, email, pass).then((res) => {
+    register(user, pass, email).then((res) => {
       console.log(res);
       if (res.status === 200) {
         console.log("registered");
