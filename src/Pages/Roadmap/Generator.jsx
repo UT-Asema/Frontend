@@ -7,25 +7,19 @@ import { store } from "../../store/store";
 import { useSelector } from "react-redux";
 import { calculateDirVector } from "./generatorUtils/positions";
 import { addZoom } from "../../store/roadmapNew";
-const Generator = () => {
+const Generator = ({ editing }) => {
   const { roadmapNew } = useSelector((state) => state);
-  // useEffect(() => {
-  //   let res = calculateDirVector({ x: 0, y: 0 }, { x: 1, y: 1 });
-  //   console.log(res);
-  // }, []);
 
   useEffect(() => {
-    // calculateSizes();
-    // calculatePositions();
-    // generateStructure2();
     addZoom();
     generateStructure();
     calculateDeltas();
-    generateUI();
-  }, [roadmapNew]);
+    generateUI(editing);
+  }, [roadmapNew, editing]);
 
   return (
     <>
+      <g id="lines-group"></g>
       <g id="boxes-group"></g>
       <g id="buttonsTop-group"></g>
       <g id="buttonsBottom-group"></g>

@@ -91,7 +91,7 @@ let copyObj = (obj) => {
 };
 
 export const calculateDeltas = () => {
-  console.log("running");
+  // console.log("running");
   // console.log("calculating delta");
   let roadmap = store.getState().roadmapNew;
   let map = roadmap.nodeMapping;
@@ -180,7 +180,7 @@ export const calculateDeltas = () => {
         // console.log(newNodes[indexForward]);
 
         if (presentIDS[nearbyNode.id] > 0) {
-          console.log("is present");
+          // console.log("is present");
         } else {
           queue.push({ ...nearbyNode });
           presentIDS[nearbyNode.id] += 1;

@@ -4,18 +4,12 @@ import { dispatch, easeLinear } from "d3";
 import { updateNodes } from "../../../store/roadmapNew";
 import { addNode, setNode } from "../../../store/roadmapNew";
 import { flipDetails } from "../../../store/roadmapNew";
+import { findNode } from "./utils";
 
 export const generateStructure = () => {
   let roadmap = store.getState().roadmapNew;
   let nodes = [...roadmap.nodes];
-  // nodes = nodes.map((el) => {
-  //   return {
-  //     ...el,
-  //     x: el.x + 200,
-  //     y: el.y + 200,
-  //   };
-  // });
-  //console.log(nodes);
+
   let rootElement = d3.selectAll("#boxes-group");
   rootElement
     .selectAll("rect")
@@ -25,12 +19,13 @@ export const generateStructure = () => {
     .enter()
     .append("rect")
     .attr("opacity", 0)
-    .attr("stroke-width", 5)
+    .attr("stroke-width", 3)
     .attr("fill", "white")
     .attr("width", (data) => data.width)
     .attr("height", (data) => data.height)
     .attr("x", (data) => data.x)
-    .attr("y", (data) => data.y);
+    .attr("y", (data) => data.y)
+    .attr("rx", 15);
 
   rootElement
     .selectAll("rect")
@@ -49,7 +44,8 @@ export const generateStructure = () => {
     .attr("height", (data) => data.height)
     .attr("stroke", "black")
     .attr("className", "")
-    .attr("stroke-width", 5);
+    .attr("stroke-width", 3)
+    .attr("rx", 15);
 
   rootElement
     .selectAll("rect")
@@ -61,25 +57,72 @@ export const generateStructure = () => {
       store.dispatch(flipDetails());
       store.dispatch(setNode(data.id));
     });
-
+  // console.log(nodes);
   rootElement
     .selectAll("text")
     .data(nodes, (data) => {
       return data.id;
     })
     .join("text")
-
+    .attr("x", (data) => data.x + 50)
+    .attr("y", (data) => data.y + 50)
     .transition()
     .duration(150)
     .ease(easeLinear)
-    .attr("x", (data) => data.x + 50)
-    .attr("y", (data) => data.y + 20)
-    .text((data) => `${data.id}`);
+
+    .text((data) => `${data.resources.title}`);
+
+  let connections = [...roadmap.connections].map((el) => {
+    return {
+      id: el.id,
+      node1: findNode(el.x),
+      node2: findNode(el.y),
+    };
+  });
+
+  rootElement = d3.selectAll("#lines-group");
+  rootElement
+    .selectAll("line")
+    .data(connections, (data) => {
+      return data.id;
+    })
+    .enter()
+    .append("line")
+    .attr("opacity", 1)
+    .attr("stroke-width", 2)
+    .attr("stroke", "white")
+
+    .attr("x1", (data) => data.node1.x + 100)
+    .attr("y1", (data) => data.node1.y + 50)
+
+    .attr("x2", (data) => data.node2.x + 100)
+    .attr("y2", (data) => data.node2.y + 50);
+
+  rootElement
+    .selectAll("line")
+    .data(connections, (data) => {
+      return data.id;
+    })
+    .transition()
+    .duration(150)
+    .ease(easeLinear)
+    .attr("opacity", 1)
+    .attr("stroke-width", 4)
+    .attr("stroke", "white")
+
+    .attr("x1", (data) => data.node1.x + 100)
+    .attr("y1", (data) => data.node1.y + 50)
+
+    .attr("x2", (data) => data.node2.x + 100)
+    .attr("y2", (data) => data.node2.y + 50);
 };
 
-export const generateUI = () => {
+export const generateUI = (clear) => {
   let roadmap = store.getState().roadmapNew;
   let nodes = [...roadmap.nodes];
+  if (clear) {
+    nodes = [];
+  }
 
   let rootElement = d3.selectAll("#buttonsTop-group");
   rootElement
@@ -121,10 +164,11 @@ export const generateUI = () => {
     })
     .join("circle")
     .on("click", (e, data) => {
-      console.log("clicked", data);
+      // console.log("clicked", data);
       store.dispatch(
         addNode({
-          y: data.y - 100,
+          id: data.id,
+          y: data.y - 100 - data.height,
           x: data.x,
         })
       );
@@ -170,11 +214,12 @@ export const generateUI = () => {
     })
     .join("circle")
     .on("click", (e, data) => {
-      console.log("clicked", data);
+      // console.log("clicked", data);
       store.dispatch(
         addNode({
+          id: data.id,
           y: data.y,
-          x: data.x - 100,
+          x: data.x - 100 - data.width,
         })
       );
     });
@@ -219,9 +264,10 @@ export const generateUI = () => {
     })
     .join("circle")
     .on("click", (e, data) => {
-      console.log("clicked", data);
+      // console.log("clicked", data);
       store.dispatch(
         addNode({
+          id: data.id,
           y: data.y + data.height + 100,
           x: data.x,
         })
@@ -269,9 +315,10 @@ export const generateUI = () => {
     })
     .join("circle")
     .on("click", (e, data) => {
-      console.log("clicked", data);
+      // console.log("clicked", data);
       store.dispatch(
         addNode({
+          id: data.id,
           y: data.y,
           x: data.x + data.width + 100,
         })

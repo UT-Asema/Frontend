@@ -8,7 +8,12 @@ import { findNode } from "./generatorUtils/utils";
 import { addNode } from "../../store/roadmapNew";
 import { useSelector } from "react-redux";
 import { updateNodeData } from "../../store/roadmapNew";
+import { useParams } from "react-router";
+
+import { createPost } from "../../api/requests";
+
 const ShowRoadmap = () => {
+  const id = useParams().id;
   const dispatch = useDispatch();
   const { roadmapNew } = useSelector((state) => state);
 
@@ -16,7 +21,8 @@ const ShowRoadmap = () => {
   const [DetailsID, setDetailsID] = useState(roadmapNew.selectedNode);
   const [node, setNode] = useState("");
   const [editing, setEditing] = useState(false);
-  const [CanEdit, setCanEdit] = useState(true);
+  const [CanEdit, setCanEdit] = useState(id == 0);
+  const [displayButtons, setdisplayButtons] = useState(true);
 
   useEffect(() => {
     d3.select("body").attr("class", "overflow-hidden");
@@ -34,7 +40,7 @@ const ShowRoadmap = () => {
     setNode(findNode(roadmapNew.selectedNode));
   }, [roadmapNew.selectedNode, roadmapNew.nodes]);
 
-  console.log(node);
+  // console.log(node);
   let testReducer = () => {
     dispatch(addNode());
   };
@@ -64,8 +70,43 @@ const ShowRoadmap = () => {
 
   return (
     <div className="border-2 h-full w-full flex bg-[#f6d9f3]">
-      <div className="w-72 h-full border-2 bg-[#1D142C]">
-        <div className="relative left-6 top-12 font-sans bg-gray-50 inline-block text-center justify-center font-bold text-xl rounded-xl p-3">Create Your Own!</div>
+      <div className="w-96 h-full border-2 bg-[#1D142C]">
+        <div className="flex justify-center w-full">
+          <div className="relative mt-20 font-sans bg-gray-50 inline-block text-center justify-center font-bold text-xl rounded-xl p-3">
+            Create Your Own!
+          </div>
+        </div>
+        <div className="flex justify-center w-full">
+          {CanEdit && (
+            <div>
+              <div className="flex justify-center content-center">
+                <button
+                  onClick={() => {
+                    setdisplayButtons((e) => {
+                      // console.log(e);
+                      return !e;
+                    });
+                  }}
+                  className="m-10 mt-20 relative  font-sans bg-gray-50 inline-block text-center justify-center font-bold text-xl rounded-xl p-3"
+                >
+                  {displayButtons ? "Edit" : "Save"}
+                </button>
+              </div>
+
+              <button
+                onClick={() => {
+                  let data = roadmapNew;
+                  console.log(data);
+                  data = JSON.stringify(data);
+                  createPost("loremipsum", "desc", data);
+                }}
+                className="m-10 mt-20 relative  font-sans bg-gray-50 inline-block text-center justify-center font-bold text-xl rounded-xl p-3"
+              >
+                Save to database
+              </button>
+            </div>
+          )}
+        </div>
       </div>
       <div className="w-full h-full">
         <svg
@@ -75,14 +116,17 @@ const ShowRoadmap = () => {
           height="100%"
         >
           <g id="root-group">
-            <Generator />
+            <Generator
+              editing={displayButtons}
+              setEditing={setdisplayButtons}
+            />
           </g>
         </svg>
       </div>
       {showDetails && (
         <div
           id="data-div"
-          className=" border-2 border-black bg-white shadow-xl absolute text-center right-0 w-fit h-full"
+          className=" w-72 border-2 border-black bg-white shadow-xl absolute text-center right-0 h-full"
         >
           {/* {DetailsID} */}
           {!editing && (
@@ -112,7 +156,7 @@ const ShowRoadmap = () => {
                   value={node.resources.paragraph}
                   onChange={(e) => {
                     //
-                    console.log(e.target.value);
+                    // console.log(e.target.value);s
                     changeParagraph(e.target.value);
                   }}
                   className="paragraph"

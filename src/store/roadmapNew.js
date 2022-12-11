@@ -28,6 +28,14 @@ let generateNode = ({ id, x, y, width, height }) => {
   };
 };
 
+let generateLine = ({ x, y, id }) => {
+  return {
+    id,
+    x,
+    y,
+  };
+};
+
 export const addZoom = () => {
   var svg = d3.select("#root-svg");
 
@@ -44,15 +52,15 @@ export const addZoom = () => {
 };
 
 let initState = () => {
-  let width = 100;
-  let height = 50;
+  let width = 200;
+  let height = 100;
   let initialState = {
     nodeID: 1,
-    lng: 150,
+    lng: 500,
     lineID: 0,
     padding: 0,
-    width: 100,
-    height: 50,
+    width: width,
+    height: height,
     user: "",
 
     showDetails: false,
@@ -77,7 +85,8 @@ export const roadmapNewSlice = createSlice({
     },
     addNode: (state, action) => {
       // adding a subnode based on the direction
-      const { x, y } = action.payload;
+      const { x, y, id } = action.payload;
+      console.log("ID", id);
       let newNode = generateNode({
         x,
         y,
@@ -105,6 +114,14 @@ export const roadmapNewSlice = createSlice({
         state.nodeMapping[node.id] = idx;
         idx += 1;
       }
+      state.connections.push(
+        generateLine({
+          x: id,
+          y: newNode.id,
+          id: state.lineID,
+        })
+      );
+      state.lineID += 1;
     },
     flipDetails: (state, action) => {
       state.showDetails = !state.showDetails;

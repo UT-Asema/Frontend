@@ -39,7 +39,7 @@ export const register = async (username, password, email) => {
   });
   console.log("respone", response);
   return response;
-}
+};
 
 export const logout = async () => {
   let response = $.ajax({
@@ -54,7 +54,7 @@ export const logout = async () => {
   });
   console.log("respone", response);
   return response;
-}
+};
 
 export const check = async () => {
   let response = $.ajax({
@@ -69,7 +69,7 @@ export const check = async () => {
   });
   console.log("respone", response);
   return response;
-}
+};
 
 export const getPost = async (id) => {
   let response = $.ajax({
@@ -84,7 +84,7 @@ export const getPost = async (id) => {
   });
   console.log("respone", response);
   return response;
-}
+};
 
 export const searchPosts = async (term) => {
   let response = $.ajax({
@@ -99,7 +99,7 @@ export const searchPosts = async (term) => {
   });
   console.log("respone", response);
   return response;
-}
+};
 
 export const getTopPosts = async () => {
   let response = $.ajax({
@@ -114,7 +114,7 @@ export const getTopPosts = async () => {
   });
   console.log("respone", response);
   return response;
-}
+};
 
 export const getNewPosts = async () => {
   let response = $.ajax({
@@ -129,7 +129,7 @@ export const getNewPosts = async () => {
   });
   console.log("respone", response);
   return response;
-}
+};
 
 export const getTrendingPosts = async () => {
   let response = $.ajax({
@@ -144,7 +144,7 @@ export const getTrendingPosts = async () => {
   });
   console.log("respone", response);
   return response;
-}
+};
 
 export const createPost = async (title, description, content) => {
   let response = $.ajax({
@@ -164,7 +164,7 @@ export const createPost = async (title, description, content) => {
   });
   console.log("respone", response);
   return response;
-}
+};
 
 export const editPost = async (id, title, description, content) => {
   let response = $.ajax({
@@ -184,7 +184,7 @@ export const editPost = async (id, title, description, content) => {
   });
   console.log("respone", response);
   return response;
-}
+};
 
 export const deletePost = async (id) => {
   let response = $.ajax({
@@ -199,7 +199,7 @@ export const deletePost = async (id) => {
   });
   console.log("respone", response);
   return response;
-}
+};
 
 export const ratePost = async (id, rating) => {
   let response = $.ajax({
@@ -217,4 +217,4 @@ export const ratePost = async (id, rating) => {
   });
   console.log("respone", response);
   return response;
-}
+};
