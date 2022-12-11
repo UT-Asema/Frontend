@@ -16,7 +16,7 @@ function SignUp() {
     // post request to backend
     // if success, login and redirect to homepage
     // if fail, display error message
-    if (register(user, email, pass)) {
+    if (register(user, pass, email)) {
       console.log("registered");
     } else {
       console.log("not registered");
