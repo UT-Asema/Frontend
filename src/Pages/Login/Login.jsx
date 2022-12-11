@@ -23,6 +23,8 @@ function Login() {
 
     if (login(user,pas)) {
       console.log("logged in");
+      // redirect to homepage
+      window.location.href = "/";
     } else {
       console.log("not logged in");
     }

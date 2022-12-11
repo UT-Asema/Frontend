@@ -18,6 +18,8 @@ function SignUp() {
     // if fail, display error message
     if (register(user, pass, email)) {
       console.log("registered");
+      // redirect to homepage
+      window.location.href = "/";
     } else {
       console.log("not registered");
     }

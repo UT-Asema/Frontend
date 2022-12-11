@@ -4,6 +4,7 @@ import $ from "jquery";
 
 // data json
 let DATA
+window.data = DATA
 try {
   DATA = JSON.parse(localStorage.getItem("data"));
 } catch (e) {
@@ -34,6 +35,9 @@ export const register = (username, password, email) => {
   } else {
     let data = DATA;
     data.users.push({ username, password, email });
+    // logged in
+    data.loggedin = true;
+
     updateData(data);
     return true;
   }
